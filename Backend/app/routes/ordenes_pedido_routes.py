@@ -1,6 +1,9 @@
 from flask import Blueprint, request, jsonify
 from collections import OrderedDict
 
+from models.ordenes_pedido import obtener_ordenes_pedido
+from models.ordenes_pedido import obtener_orden_por_id
+from models.ordenes_pedido import obtener_orden_por_id
 from models.productos import obtener_producto_por_id
 from models.usuarios import obtener_usuario_por_id
 
