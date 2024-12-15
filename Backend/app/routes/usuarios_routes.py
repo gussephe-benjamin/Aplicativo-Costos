@@ -4,7 +4,7 @@ from models.usuarios import registrar_usuario, obtener_usuario_por_email, genera
 usuarios_bp = Blueprint('usuarios', __name__)
 
 # Ruta para registrar un nuevo usuario
-@usuarios_bp.route('/usuarios/registro', methods=['POST'])
+@usuarios_bp.route('/registro', methods=['POST'])
 def registro_usuario():
     data = request.get_json()
     nombre = data['nombre']
@@ -19,22 +19,32 @@ def registro_usuario():
     return jsonify({'message': 'Usuario registrado exitosamente'}), 201
 
 # Ruta para hacer login
-@usuarios_bp.route('/usuarios/login', methods=['POST'])
+@usuarios_bp.route('/login', methods=['POST'])
 def login_usuario():
     data = request.get_json()
     email = data['email']
     contraseña = data['contraseña']
 
+    # Obtener usuario por email
     usuario = obtener_usuario_por_email(email)
-    if not usuario or usuario['contraseña'] != contraseña:
+    print(usuario)
+
+    if not usuario:
         return jsonify({'message': 'Credenciales incorrectas'}), 401
 
+    # Convertir ambas contraseñas a cadena antes de comparar
+    print(str(usuario['contraseña']), str(contraseña))  # Para depuración
+    if str(usuario['contraseña']) != str(contraseña):
+        return jsonify({'message': 'Credenciales incorrectas'}), 401
+
+    # Generar y devolver el token
     token = generar_token(usuario)
     return jsonify({'token': token}), 200
 
 # Ruta para verificar el rol del usuario (middleware)
-@usuarios_bp.route('/usuarios/rol', methods=['GET'])
+@usuarios_bp.route('/rol', methods=['GET'])
 def verificar_rol():
+    
     token = request.headers.get('Authorization')
     if not token:
         return jsonify({'message': 'Token no proporcionado'}), 401

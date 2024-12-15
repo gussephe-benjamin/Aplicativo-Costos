@@ -11,12 +11,12 @@ from models.costos_indirectos import (
 costos_indirectos_bp = Blueprint('costos_indirectos', __name__)
 
 # Ruta para obtener todos los registros de costos indirectos
-@costos_indirectos_bp.route('/costos-indirectos', methods=['GET'])
+@costos_indirectos_bp.route('/getAll', methods=['GET'])
 def get_costos_indirectos():
     return jsonify(obtener_costos_indirectos()), 200
 
 # Ruta para obtener un registro de costos indirectos por ID
-@costos_indirectos_bp.route('/costos-indirectos/<int:id>', methods=['GET'])
+@costos_indirectos_bp.route('/get/<int:id>', methods=['GET'])
 def get_costos_indirectos_by_id(id):
     costo_indirecto = obtener_costos_indirectos_por_id(id)
     if costo_indirecto:
@@ -24,7 +24,7 @@ def get_costos_indirectos_by_id(id):
     return jsonify({'mensaje': 'Costo Indirecto no encontrado'}), 404
 
 # Ruta para crear un nuevo registro de costos indirectos
-@costos_indirectos_bp.route('/costos-indirectos', methods=['POST'])
+@costos_indirectos_bp.route('/post', methods=['POST'])
 def create_costos_indirectos():
     data = request.get_json()
     tipo = data.get('tipo')
@@ -38,7 +38,7 @@ def create_costos_indirectos():
     return jsonify(nuevo_registro), 201
 
 # Ruta para actualizar un registro de costos indirectos
-@costos_indirectos_bp.route('/costos-indirectos/<int:id>', methods=['PUT'])
+@costos_indirectos_bp.route('/put/<int:id>', methods=['PUT'])
 def update_costos_indirectos(id):
     data = request.get_json()
     tipo = data.get('tipo')
@@ -51,9 +51,11 @@ def update_costos_indirectos(id):
     return jsonify({'mensaje': 'Costo Indirecto no encontrado'}), 404
 
 # Ruta para eliminar un registro de costos indirectos
-@costos_indirectos_bp.route('/costos-indirectos/<int:id>', methods=['DELETE'])
+@costos_indirectos_bp.route('/delete/<int:id>', methods=['DELETE'])
 def delete_costos_indirectos(id):
     resultado = eliminar_costos_indirectos(id)
-    if 'mensaje' in resultado:
+    
+    if 'success' in resultado:
         return jsonify(resultado), 200
+
     return jsonify({'mensaje': 'Costo Indirecto no encontrado'}), 404

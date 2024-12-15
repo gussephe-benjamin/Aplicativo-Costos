@@ -5,7 +5,7 @@ from models.mano_obra import obtener_mano_obra, obtener_mano_obra_por_id, crear_
 mano_obra_bp = Blueprint('mano_obra', __name__)
 
 # Ruta para obtener todos los registros de mano de obra
-@mano_obra_bp.route('/mano-obra', methods=['GET'])
+@mano_obra_bp.route('/getAll', methods=['GET'])
 def obtener_toda_mano_obra():
     try:
         data = obtener_mano_obra()
@@ -14,7 +14,7 @@ def obtener_toda_mano_obra():
         return jsonify({'error': str(e)}), 500
 
 # Ruta para obtener un registro de mano de obra por ID
-@mano_obra_bp.route('/mano-obra/<int:id>', methods=['GET'])
+@mano_obra_bp.route('/get/<int:id>', methods=['GET'])
 def obtener_mano_obra_por_id_route(id):
     try:
         data = obtener_mano_obra_por_id(id)
@@ -26,8 +26,9 @@ def obtener_mano_obra_por_id_route(id):
         return jsonify({'error': str(e)}), 500
 
 # Ruta para crear un nuevo registro de mano de obra
-@mano_obra_bp.route('/mano-obra', methods=['POST'])
+@mano_obra_bp.route('/post', methods=['POST'])
 def crear_mano_obra_route():
+    
     try:
         data = request.get_json()
         nombre_empleado = data.get('nombre_empleado')
@@ -44,7 +45,7 @@ def crear_mano_obra_route():
         return jsonify({'error': str(e)}), 500
 
 # Ruta para actualizar un registro de mano de obra
-@mano_obra_bp.route('/mano-obra/<int:id>', methods=['PUT'])
+@mano_obra_bp.route('/put/<int:id>', methods=['PUT'])
 def actualizar_mano_obra_route(id):
     try:
         data = request.get_json()
@@ -59,7 +60,7 @@ def actualizar_mano_obra_route(id):
         return jsonify({'error': str(e)}), 500
 
 # Ruta para eliminar un registro de mano de obra
-@mano_obra_bp.route('/mano-obra/<int:id>', methods=['DELETE'])
+@mano_obra_bp.route('/delete/<int:id>', methods=['DELETE'])
 def eliminar_mano_obra_route(id):
     try:
         result = eliminar_mano_obra(id)

@@ -11,11 +11,11 @@ def inicializar_datos():
         # Crear un DataFrame vacío para cada hoja necesaria
         hojas = {
             'usuarios': pd.DataFrame(columns=['id', 'nombre', 'email', 'contraseña', 'rol', 'fecha_registro']),
-            'productos': pd.DataFrame(columns=['id', 'nombre', 'descripcion', 'precio_unitario', 'stock', 'fecha_agregado']),
-            'materia_prima': pd.DataFrame(columns=['id', 'nombre', 'descripcion', 'stock', 'fecha_agregado']),
-            'mano_obra': pd.DataFrame(columns=['id', 'nombre', 'descripcion', 'precio', 'stock', 'fecha_agregado']),
-            'costos_indirectos': pd.DataFrame(columns=['id', 'nombre', 'descripcion', 'monto', 'fecha_agregado']),
-            'ordenes_pedido': pd.DataFrame(columns=['id', 'id_usuario', 'productos', 'fecha_pedido', 'estado']),
+            'productos': pd.DataFrame(columns=['id', 'nombre_producto', 'descripcion', 'precio_unitario', 'stock', 'fecha_agregado', 'fecha_actualizado']),
+            'materia_prima': pd.DataFrame(columns=['id', 'nombre_materia_prima', 'cantidad_disponible', 'precio_por_unidad', 'producto_id', 'fecha_agregado']),
+            'mano_obra': pd.DataFrame(columns=['id', 'nombre_empleado', 'costo_por_hora', 'horas_requeridas', 'producto_id', 'fecha_agregado']),
+            'costos_indirectos': pd.DataFrame(columns=['id', 'tipo', 'monto', 'descripcion']),
+            'ordenes_pedido': pd.DataFrame(columns=['id', 'usuario_id', 'producto_id', 'cantidad','total_costos_directos', 'total_costos_indirectos', 'total_costos','precio_unitario', 'fecha_entrega']),
         }
         
         # Crear el archivo Excel con las hojas necesarias
@@ -26,3 +26,6 @@ def inicializar_datos():
         print(f"Archivo {EXCEL_FILE} creado exitosamente con las hojas iniciales.")
     else:
         print(f"El archivo {EXCEL_FILE} ya existe. No es necesario crear uno nuevo.")
+
+
+inicializar_datos()

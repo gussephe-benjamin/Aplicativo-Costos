@@ -19,8 +19,8 @@ def leer_productos():
 def guardar_productos(df):
     """Guardar los productos actualizados en la hoja correspondiente del archivo Excel"""
     try:
-        # Guardamos el DataFrame en la hoja 'productos' del archivo Excel
-        df.to_excel(EXCEL_FILE, sheet_name=SHEET_NAME, index=False)
+        with pd.ExcelWriter(EXCEL_FILE, mode='a', if_sheet_exists='replace', engine='openpyxl') as writer:
+            df.to_excel(writer, sheet_name=SHEET_NAME, index=False)
     except Exception as e:
         print(f"Error al guardar productos: {e}")
 
@@ -31,17 +31,17 @@ def agregar_producto(nombre, descripcion, precio_unitario, stock, fecha_agregado
         df = pd.read_excel(EXCEL_FILE, sheet_name=SHEET_NAME)
         
         # Crear un nuevo producto
-        nuevo_producto = {
+        nuevo_producto = pd.DataFrame([{
             'id': len(df) + 1,  # Asignamos un ID único
-            'nombre': nombre,
+            'nombre_producto': nombre,
             'descripcion': descripcion,
             'precio_unitario': precio_unitario,
             'stock': stock,
             'fecha_agregado': fecha_agregado
-        }
+        }])
         
-        # Agregar el nuevo producto al DataFrame
-        df = df.append(nuevo_producto, ignore_index=True)
+        # Concatenar el nuevo producto al DataFrame existente
+        df = pd.concat([df, nuevo_producto], ignore_index=True)
         
         # Guardar los cambios en la hoja de Excel
         guardar_productos(df)
@@ -51,17 +51,31 @@ def agregar_producto(nombre, descripcion, precio_unitario, stock, fecha_agregado
         print(f"Error al agregar producto: {e}")
         return {"error": "Hubo un error al agregar el producto"}
 
-def actualizar_producto(id, nombre, descripcion, precio_unitario, stock, fecha_agregado):
+
+def actualizar_producto(id, nombre=None, descripcion=None, precio_unitario=None, stock=None, fecha_actualizado=None):
     """Actualizar un producto existente en la hoja de Excel"""
     try:
         # Leer los productos desde el archivo Excel
         df = pd.read_excel(EXCEL_FILE, sheet_name=SHEET_NAME)
         
+        # Convertir el tipo de la columna 'id' a entero para evitar problemas de comparación
+        df['id'] = df['id'].astype(int)
+        
         # Verificar si el producto existe
-        producto = df[df['id'] == id]
-        if not producto.empty:
-            # Actualizamos el producto
-            df.loc[df['id'] == id, ['nombre', 'descripcion', 'precio_unitario', 'stock', 'fecha_agregado']] = [nombre, descripcion, precio_unitario, stock, fecha_agregado]
+        producto_index = df[df['id'] == id].index
+        
+        if not producto_index.empty:
+            # Actualizamos los campos proporcionados (solo los que no son None)
+            if nombre is not None:
+                df.loc[producto_index, 'nombre'] = nombre
+            if descripcion is not None:
+                df.loc[producto_index, 'descripcion'] = descripcion
+            if precio_unitario is not None:
+                df.loc[producto_index, 'precio_unitario'] = precio_unitario
+            if stock is not None:
+                df.loc[producto_index, 'stock'] = stock
+            if fecha_actualizado is not None:
+                df.loc[producto_index, 'fecha_actualizado'] = fecha_actualizado
             
             # Guardamos los cambios
             guardar_productos(df)
@@ -71,6 +85,7 @@ def actualizar_producto(id, nombre, descripcion, precio_unitario, stock, fecha_a
     except Exception as e:
         print(f"Error al actualizar producto: {e}")
         return {"error": "Hubo un error al actualizar el producto"}
+
 
 def eliminar_producto(id):
     """Eliminar un producto de la hoja de Excel"""

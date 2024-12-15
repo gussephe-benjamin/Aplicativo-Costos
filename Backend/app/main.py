@@ -2,9 +2,9 @@ from flask import Flask
 from routes import usuarios_routes, productos_routes, materia_prima_routes, mano_obra_routes, costos_indirectos_routes, ordenes_pedido_routes
 from config import Config
 from init_db import inicializar_datos
+import os
 
 # Inicializamos los datos si no existe el archivo
-inicializar_datos()
 
 app = Flask(__name__)
 
@@ -22,6 +22,6 @@ app.register_blueprint(costos_indirectos_routes.costos_indirectos_bp, url_prefix
 app.register_blueprint(ordenes_pedido_routes.ordenes_pedido_bp, url_prefix='/ordenes-pedido')
 
 if __name__ == '__main__':
-   
+    
     # Iniciar la aplicación
     app.run(debug=True)
