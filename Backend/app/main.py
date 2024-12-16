@@ -24,4 +24,4 @@ app.register_blueprint(ordenes_pedido_routes.ordenes_pedido_bp, url_prefix='/ord
 if __name__ == '__main__':
     
     # Iniciar la aplicación
-    app.run(debug=True)
+    app.run(host = '0.0.0.0', port = 5000, debug=True)

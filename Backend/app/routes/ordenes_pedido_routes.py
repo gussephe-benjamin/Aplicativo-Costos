@@ -97,21 +97,6 @@ def delete_orden_de_pedido_route(id):
         return jsonify(resultado), 200
     
     return jsonify({'mensaje': 'Orden de pedido no encontrada'}), 404
-
-@ordenes_pedido_bp.route('/pdf/<int:orden_id>', methods=['GET'])
-def generar_pdf(orden_id):
-    # Generar el PDF con la orden de pedido
-    resultado = generar_pdf_orden(orden_id)
-    if "error" in resultado:
-        return jsonify(resultado), 404  # Enviar error si no se genera el PDF
-
-    # Enviar el archivo como descarga
-    return send_file(
-        resultado["file_path"], 
-        as_attachment=True,  # Indica al navegador que es un archivo para descargar
-        download_name=f"orden_{orden_id}.pdf",  # Nombre del archivo
-        mimetype='application/pdf'  # Especificar el tipo MIME
-    )
     
 # Endpoint para descargar el PDF de una orden de pedido
 @ordenes_pedido_bp.route('/download-pdf/<int:orden_id>', methods=['GET'])
