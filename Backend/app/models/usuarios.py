@@ -14,9 +14,13 @@ SECRET_KEY = Config.JWT_SECRET_KEY  # Usamos la clave secreta para JWT desde la 
 def leer_usuarios():
     """Leer todos los usuarios desde el archivo Excel y devolverlos como una lista de diccionarios"""
     try:
-        # Leemos la hoja 'usuarios' del archivo Excel
+        # Leer usuarios desde Excel
         df = pd.read_excel(EXCEL_FILE, sheet_name=SHEET_NAME)
-        return df.to_dict(orient='records')  # Convertimos el DataFrame a lista de diccionarios
+        print("Usuarios leídos correctamente:", df.to_dict(orient='records'))
+        return df.to_dict(orient='records')
+    except FileNotFoundError:
+        print("Archivo no encontrado. Creando estructura vacía.")
+        return []
     except Exception as e:
         print(f"Error al leer usuarios: {e}")
         return []
@@ -24,46 +28,53 @@ def leer_usuarios():
 def guardar_usuarios(df):
     """Guardar los usuarios actualizados en la hoja correspondiente del archivo Excel"""
     try:
-        # Guardamos el DataFrame en la hoja 'usuarios' del archivo Excel
-        with pd.ExcelWriter(EXCEL_FILE, mode='a', if_sheet_exists='replace') as writer:
+        with pd.ExcelWriter(EXCEL_FILE, mode='a', if_sheet_exists='replace', engine='openpyxl') as writer:
             df.to_excel(writer, sheet_name=SHEET_NAME, index=False)
+        print("Usuarios guardados correctamente.")
+    except FileNotFoundError:
+        print("No se encontró el archivo. Creando uno nuevo...")
+        df.to_excel(EXCEL_FILE, sheet_name=SHEET_NAME, index=False)
     except Exception as e:
         print(f"Error al guardar usuarios: {e}")
 
-def registrar_usuario(nombre, email, contraseña, rol):
+def registrar_usuario(nombre, email, contraseña, rol="usuario"):
     """Registrar un nuevo usuario en la hoja de Excel"""
     try:
-        # Leer los usuarios actuales desde el archivo Excel
         try:
             df = pd.read_excel(EXCEL_FILE, sheet_name=SHEET_NAME)
         except FileNotFoundError:
-            # Si el archivo no existe, crea un DataFrame vacío con las columnas necesarias
             df = pd.DataFrame(columns=['id', 'nombre', 'email', 'contraseña', 'rol', 'fecha_registro'])
-        
-        # Verificar si el usuario ya existe
+
+        if 'email' not in df.columns:
+            raise KeyError("La columna 'email' no existe en la hoja de Excel.")
+
+        # Verificar duplicados
         if email in df['email'].values:
             return {"error": "El usuario ya existe."}
-        
-        # Crear un nuevo usuario
-        nuevo_usuario = pd.DataFrame([{
-            'id': len(df) + 1 if not df.empty else 1,  # Asignamos un ID único
+
+        nuevo_usuario = {
+            'id': len(df) + 1 if not df.empty else 1,
             'nombre': nombre,
             'email': email,
-            'contraseña': contraseña,  # En un caso real, deberíamos hash la contraseña
+            'contraseña': contraseña,
             'rol': rol,
             'fecha_registro': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        }])
-        
-        # Concatenar el nuevo usuario al DataFrame existente
-        df = pd.concat([df, nuevo_usuario], ignore_index=True)
-        
-        # Guardar los cambios en la hoja de Excel
+        }
+
+        # Agregar al DataFrame
+        df = pd.concat([df, pd.DataFrame([nuevo_usuario])], ignore_index=True)
+
+        # Guardar usuarios
         guardar_usuarios(df)
-        
         return {"success": "Usuario registrado exitosamente"}
+
+    except KeyError as e:
+        print(f"Error: {e}")
+        return {"error": f"Faltan columnas necesarias: {e}"}
     except Exception as e:
         print(f"Error al registrar usuario: {e}")
         return {"error": "Hubo un error al registrar el usuario"}
+
 
 def obtener_usuario_por_email(email):
     """Obtener un usuario por su email desde la hoja de Excel"""
@@ -108,37 +119,25 @@ def verificar_credenciales(email, contraseña):
     return None
 
 def obtener_usuario_por_id(usuario_id):
-    """
-    Obtener un usuario por su ID desde la hoja de Excel.
-    """
+    """Obtener un usuario por su ID desde la hoja de Excel"""
     try:
-        # Leer los usuarios desde el archivo Excel
         df = pd.read_excel(EXCEL_FILE, sheet_name=SHEET_NAME)
 
-        # Imprimir columnas para verificar los nombres exactos
-        print("Columnas disponibles:", df.columns)
-
-        # Asegurarse de que 'id' sea tipo entero
-        if 'id' in df.columns:
-            df['id'] = df['id'].astype(int)  # Convertir a entero
-        else:
+        if 'id' not in df.columns:
             raise KeyError("La columna 'id' no existe en la hoja de Excel.")
 
-        # Filtrar el usuario por ID
-        usuario = df[df['id'] == int(usuario_id)]
+        df['id'] = df['id'].astype(int)
+        usuario = df[df['id'] == usuario_id]
 
-        # Verificar si se encontró el usuario
         if not usuario.empty:
-            return usuario.iloc[0].to_dict()  # Convertir el registro a diccionario y retornarlo
+            return usuario.iloc[0].to_dict()
         else:
+            print("Usuario no encontrado.")
             return None
+
     except KeyError as e:
         print(f"Error: {e}")
         return None
     except Exception as e:
         print(f"Error al obtener usuario por ID: {e}")
         return None
-
-# Ejemplo de uso
-resultado = obtener_usuario_por_id(1)
-print("Usuario encontrado:", resultado)

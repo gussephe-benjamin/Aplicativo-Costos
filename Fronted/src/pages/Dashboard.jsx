@@ -24,7 +24,7 @@ const Dashboard = () => {
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.title}>¡Bienvenido, {usuario?.nombre || "Usuario"}! 👋</h2>
+      <h2 style={styles.title}>¡Bienvenido, {usuario?.nombre || "Usuario"}, Estas en TIENDAS ALTIPLANO ! 👋</h2>
       <p style={styles.subtitle}>Selecciona una opción para empezar:</p>
 
       <div style={styles.grid}>
