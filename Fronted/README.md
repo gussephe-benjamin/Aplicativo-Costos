@@ -10,3 +10,8 @@ Currently, two official plugins are available:
 instalar las dependencias
 
 npm install $(cat requirements.txt)
+
+docker build -t react-frontend .
+
+docker run -p 5173:5173 react-frontend
+
