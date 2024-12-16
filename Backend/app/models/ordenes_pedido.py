@@ -82,23 +82,28 @@ def gestionar_inventario(producto_id, cantidad):
     except Exception as e:
         return {"error": f"Error al gestionar el inventario: {e}"}
 
-# Función para crear una nueva orden de pedido
 def crear_orden_de_pedido(usuario_id, producto_id, cantidad, fecha_entrega):
     try:
+        print("Iniciando la creación de orden...")
         df = leer_ordenes_pedido()
+        print(f"Órdenes actuales en el archivo: {df.shape[0]} filas.")
 
         validacion_fecha = validar_fecha_entrega(producto_id, cantidad, fecha_entrega)
         if "error" in validacion_fecha:
+            print(f"Error en validación de fecha: {validacion_fecha}")
             return validacion_fecha
 
         gestion_inventario = gestionar_inventario(producto_id, cantidad)
         if "error" in gestion_inventario:
+            print(f"Error en gestión de inventario: {gestion_inventario}")
             return gestion_inventario
 
         producto = obtener_producto_por_id(producto_id)
         if not producto:
+            print("Error: Producto no encontrado.")
             return {"error": "Producto no encontrado"}
 
+        print("Calculando costos...")
         materia_prima = obtener_materia_prima_por_producto(producto_id)
         costo_materia_prima = sum([m['cantidad_disponible'] * m['precio_por_unidad'] for m in materia_prima])
 
@@ -112,6 +117,7 @@ def crear_orden_de_pedido(usuario_id, producto_id, cantidad, fecha_entrega):
         precio_unitario = costo_total / cantidad
 
         nuevo_id = int(df['id'].max() + 1) if not df.empty else 1
+        print(f"Nuevo ID generado: {nuevo_id}")
 
         nuevo_registro = {
             'id': nuevo_id,
@@ -126,11 +132,17 @@ def crear_orden_de_pedido(usuario_id, producto_id, cantidad, fecha_entrega):
             'fecha_creacion': pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')
         }
 
+        print("Nuevo registro:", nuevo_registro)
+
         df = pd.concat([df, pd.DataFrame([nuevo_registro])], ignore_index=True)
+        print("Guardando orden en el archivo...")
         guardar_ordenes_pedido(df)
+        print("Orden guardada exitosamente.")
         return nuevo_registro
     except Exception as e:
+        print(f"Error general: {e}")
         return {"error": f"Error al crear la orden de pedido: {e}"}
+
 
 # Función para actualizar una orden existente
 def actualizar_orden_de_pedido(id, cantidad=None, fecha_entrega=None):
