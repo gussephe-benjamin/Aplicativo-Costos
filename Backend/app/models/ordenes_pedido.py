@@ -6,10 +6,14 @@ from models.mano_obra import obtener_mano_obra_por_producto
 from models.costos_indirectos import obtener_costos_indirectos
 from collections import OrderedDict
 from datetime import datetime, timedelta
+from fpdf import FPDF
+import os
+from models.usuarios import obtener_usuario_por_id
 
 # Variables globales para archivo y hoja
 EXCEL_FILE = Config.EXCEL_FILE
 SHEET_NAME = "ordenes_pedido"
+OUTPUT_DIR = "generated_pdfs"
 
 # Función para leer las órdenes de pedido
 def leer_ordenes_pedido():
@@ -165,3 +169,50 @@ def obtener_orden_por_id(id):
     if not record.empty:
         return record.iloc[0].to_dict()
     return None
+
+OUTPUT_DIR = "generated_pdfs"
+
+if not os.path.exists(OUTPUT_DIR):
+    os.makedirs(OUTPUT_DIR)
+
+def generar_pdf_orden(orden_id):
+    # Obtener datos de la orden
+    
+    orden = obtener_orden_por_id(orden_id)
+    if not orden:
+        return {"error": "Orden no encontrada"}
+
+    producto = obtener_producto_por_id(orden["producto_id"])
+    usuario = obtener_usuario_por_id(orden["usuario_id"])
+
+    # Crear un nuevo PDF
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+
+    # Título
+    pdf.set_font("Arial", style="B", size=16)
+    pdf.cell(200, 10, txt="Resumen de Pedido", ln=True, align="C")
+    pdf.ln(10)
+
+    # Datos de la orden
+    pdf.set_font("Arial", size=12)
+    pdf.cell(0, 10, txt=f"ID de la Orden: {orden['id']}", ln=True)
+    pdf.cell(0, 10, txt=f"Cliente: {usuario['email']}", ln=True)
+    pdf.cell(0, 10, txt=f"Producto: {producto['nombre']}", ln=True)
+    pdf.cell(0, 10, txt=f"Cantidad: {orden['cantidad']}", ln=True)
+    pdf.cell(0, 10, txt=f"Fecha de Creación: {orden['fecha_creacion']}", ln=True)
+    pdf.cell(0, 10, txt=f"Fecha de Entrega: {orden['fecha_entrega']}", ln=True)
+    pdf.ln(10)
+
+    # Detalles de costos
+    pdf.cell(0, 10, txt="Costos:", ln=True)
+    pdf.cell(0, 10, txt=f"Costos Directos: {orden['total_costos_directos']}", ln=True)
+    pdf.cell(0, 10, txt=f"Costos Indirectos: {orden['total_costos_indirectos']}", ln=True)
+    pdf.cell(0, 10, txt=f"Total: {orden['total_costos']}", ln=True)
+    pdf.cell(0, 10, txt=f"Precio Unitario: {orden['precio_unitario']}", ln=True)
+
+    # Guardar el archivo PDF
+    pdf_file = os.path.join(OUTPUT_DIR, f"orden_{orden_id}.pdf")
+    pdf.output(pdf_file)
+    return {"success": "PDF generado exitosamente", "file_path": pdf_file}

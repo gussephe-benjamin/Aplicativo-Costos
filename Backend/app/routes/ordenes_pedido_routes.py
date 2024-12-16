@@ -1,11 +1,16 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, make_response
 from collections import OrderedDict
+
+import os
 
 from models.ordenes_pedido import obtener_ordenes_pedido
 from models.ordenes_pedido import obtener_orden_por_id
 from models.ordenes_pedido import obtener_orden_por_id
 from models.productos import obtener_producto_por_id
 from models.usuarios import obtener_usuario_por_id
+
+from flask import Blueprint, jsonify, send_file
+from models.ordenes_pedido import generar_pdf_orden
 
 from models.ordenes_pedido import (
     obtener_ordenes_pedido,
@@ -92,3 +97,45 @@ def delete_orden_de_pedido_route(id):
         return jsonify(resultado), 200
     
     return jsonify({'mensaje': 'Orden de pedido no encontrada'}), 404
+
+@ordenes_pedido_bp.route('/pdf/<int:orden_id>', methods=['GET'])
+def generar_pdf(orden_id):
+    # Generar el PDF con la orden de pedido
+    resultado = generar_pdf_orden(orden_id)
+    if "error" in resultado:
+        return jsonify(resultado), 404  # Enviar error si no se genera el PDF
+
+    # Enviar el archivo como descarga
+    return send_file(
+        resultado["file_path"], 
+        as_attachment=True,  # Indica al navegador que es un archivo para descargar
+        download_name=f"orden_{orden_id}.pdf",  # Nombre del archivo
+        mimetype='application/pdf'  # Especificar el tipo MIME
+    )
+    
+# Endpoint para descargar el PDF de una orden de pedido
+@ordenes_pedido_bp.route('/download-pdf/<int:orden_id>', methods=['GET'])
+def descargar_pdf_orden(orden_id):
+    try:
+        # Generar el PDF
+        resultado = generar_pdf_orden(orden_id)
+        if "error" in resultado:
+            return jsonify(resultado), 404
+
+        # Ruta al archivo generado
+        file_path = resultado["file_path"]
+
+        # Validar si el archivo existe
+        if not os.path.exists(file_path):
+            return jsonify({"error": "El archivo PDF no se encontró"}), 404
+
+        # Enviar el archivo con cabecera para descarga
+        return send_file(
+            file_path,
+            as_attachment=True,  # Hace que el navegador fuerce la descarga
+            download_name=f"orden_{orden_id}.pdf",  # Nombre del archivo a descargar
+            mimetype="application/pdf"  # Tipo MIME correcto para PDF
+        )
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

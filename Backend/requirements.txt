@@ -6,3 +6,4 @@ numpy
 setuptools
 wheel
 pyjwt
+fpdf2
