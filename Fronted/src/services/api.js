@@ -2,7 +2,11 @@ import axios from "axios";
 
 // Configuración de Axios
 const API = axios.create({
-  baseURL: "http://localhost:5000", // Asegúrate de usar la URL de tu backend
+  baseURL: "http://localhost:5000",
+  //  // Asegúrate de usar la URL de tu backend
+  headers: {
+    "Content-Type": "application/json", // Especifica que los datos son JSON
+  },
 });
 
 // Interceptor para incluir el token en las solicitudes protegidas
@@ -57,19 +61,28 @@ export const actualizarCostoIndirecto = (id, data) => API.put(`/costos-indirecto
 export const eliminarCostoIndirecto = (id) => API.delete(`/costos-indirectos/delete/${id}`);
 
 // --- ORDENES DE PEDIDO ---
-export const crearOrden = (data) => API.post("/ordenes-pedido/post", data);
-export const getOrdenes = () => API.get("/ordenes-pedido/getAll");
+export const crearOrden = (data) => {
+  console.log("Datos enviados desde Axios:", data); // Log para depurar
+  return API.post("/ordenes-pedido/post", data);
+};
+export const getOrdenes = () => {
+  return API.get("/ordenes-pedido/getAll");
+};
+
 export const actualizarOrden = (id, data) =>
   API.put(`/ordenes-pedido/put/${id}`, data);
-export const eliminarOrden = (id) =>
-  API.delete(`/ordenes-pedido/delete/${id}`);
+
+export const eliminarOrden = (id) => {
+  return API.delete(`/ordenes-pedido/delete/${id}`);
+};
 
 // --- COSTOS CALCULADOS ---
 export const calcularCostos = (data) => API.post("/costos/calcular", data);
 
 // --- REPORTES (PDF) ---
-export const descargarReportePDF = () =>
-  API.get("/ordenes-pedido/pdf", { responseType: "blob" });
+export const descargarReportePDF = (orden_id) =>
+  API.get(`/ordenes-pedido/download-pdf/${orden_id}`, { responseType: "blob" });
+
 
 // Exportar todas las funciones juntas
 export default {

@@ -32,7 +32,9 @@ const Ordenes = () => {
     e.preventDefault();
     setError(null);
     setMensaje(null);
-
+  
+    console.log("Datos enviados al backend:", nuevaOrden);
+  
     try {
       await crearOrden(nuevaOrden);
       setMensaje("Orden creada exitosamente.");
@@ -44,10 +46,11 @@ const Ordenes = () => {
       });
       cargarOrdenes(); // Recargar las órdenes
     } catch (error) {
-      console.error("Error al crear orden:", error.message);
+      console.error("Error al crear orden:", error.response?.data || error.message);
       setError("Error al crear la orden. Verifique los datos.");
     }
   };
+  
 
   // Manejar la eliminación de una orden
   const handleEliminarOrden = async (id) => {
@@ -152,7 +155,7 @@ const styles = {
     border: "1px solid #ddd",
     borderRadius: "8px",
     boxShadow: "0px 4px 6px rgba(0,0,0,0.1)",
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#664242",
   },
   form: {
     display: "flex",
@@ -189,7 +192,7 @@ const styles = {
   listItem: {
     marginBottom: "10px",
     padding: "10px",
-    backgroundColor: "#f1f1f1",
+    backgroundColor: "#23ff00",
     borderRadius: "5px",
     display: "flex",
     justifyContent: "space-between",

@@ -1,82 +1,66 @@
-import { useState } from "react";
-import { calcularCostos } from "../services/api";
+import { useEffect, useState } from "react";
+import { getOrdenes } from "../services/api";
 
 const Costos = () => {
-  const [cantidad, setCantidad] = useState("");
-  const [modelo, setModelo] = useState("");
-  const [fechaEntrega, setFechaEntrega] = useState("");
-  const [resultados, setResultados] = useState(null);
+  const [ordenes, setOrdenes] = useState([]); // Lista de órdenes
   const [error, setError] = useState(null);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Cargar las órdenes existentes desde el backend
+  const cargarOrdenes = async () => {
     setError(null);
-    setResultados(null);
-
     try {
-      // Preparar datos a enviar
-      const data = {
-        cantidad: parseInt(cantidad, 10),
-        modelo,
-        fecha_entrega: fechaEntrega,
-      };
-
-      // Llamada a la API
-      const response = await calcularCostos(data);
-      setResultados(response.data);
+      const response = await getOrdenes();
+      setOrdenes(response.data); // Almacenar las órdenes existentes
     } catch (err) {
-      console.error("Error al calcular los costos:", err.message);
-      setError("Hubo un error al calcular los costos. Inténtalo de nuevo.");
+      console.error("Error al cargar las órdenes:", err.message);
+      setError("Error al cargar las órdenes. Verifique el servidor.");
     }
   };
+
+  useEffect(() => {
+    cargarOrdenes();
+  }, []);
 
   return (
     <div style={styles.container}>
       <h2 style={styles.title}>Cálculo de Costos</h2>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <label style={styles.label}>Cantidad del pedido:</label>
-        <input
-          type="number"
-          placeholder="Ingrese la cantidad"
-          value={cantidad}
-          onChange={(e) => setCantidad(e.target.value)}
-          style={styles.input}
-          required
-        />
-
-        <label style={styles.label}>Modelo del producto:</label>
-        <input
-          type="text"
-          placeholder="Ingrese el modelo"
-          value={modelo}
-          onChange={(e) => setModelo(e.target.value)}
-          style={styles.input}
-          required
-        />
-
-        <label style={styles.label}>Fecha de entrega:</label>
-        <input
-          type="date"
-          value={fechaEntrega}
-          onChange={(e) => setFechaEntrega(e.target.value)}
-          style={styles.input}
-          required
-        />
-
-        <button type="submit" style={styles.button}>
-          Calcular Costos
-        </button>
-      </form>
+      <p style={styles.subtitle}>
+        Aquí puedes ver el desglose de los costos calculados para cada orden.
+      </p>
 
       {error && <p style={styles.error}>{error}</p>}
 
-      {resultados && (
-        <div style={styles.resultados}>
-          <h3>Resultados del Cálculo:</h3>
-          <p><strong>Costo Total:</strong> ${resultados.costo_total}</p>
-          <p><strong>Precio Unitario:</strong> ${resultados.precio_unitario}</p>
-          <p><strong>Detalles:</strong> {resultados.detalle}</p>
-        </div>
+      {/* Listado de órdenes con costos */}
+      <h3 style={styles.sectionTitle}>Órdenes Existentes</h3>
+      {ordenes.length > 0 ? (
+        <table style={styles.table}>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Usuario ID</th>
+              <th>Producto ID</th>
+              <th>Cantidad</th>
+              <th>Costos Directos</th>
+              <th>Costos Indirectos</th>
+              <th>Costo Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ordenes.map((orden) => (
+              <tr key={orden.id}>
+                <td>{orden.id}</td>
+                <td>{orden.usuario_id}</td>
+                <td>{orden.producto_id}</td>
+                <td>{orden.cantidad}</td>
+                <td>${orden.total_costos_directos?.toFixed(2)}</td>
+                <td>${orden.total_costos_indirectos?.toFixed(2)}</td>
+                <td>${orden.total_costos?.toFixed(2)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p>No hay órdenes disponibles para mostrar.</p>
       )}
     </div>
   );
@@ -84,38 +68,50 @@ const Costos = () => {
 
 const styles = {
   container: {
-    maxWidth: "500px",
+    maxWidth: "900px",
     margin: "30px auto",
     padding: "20px",
-    border: "1px solid #ddd",
+    backgroundColor: "#444",
     borderRadius: "8px",
     boxShadow: "0px 4px 6px rgba(0,0,0,0.1)",
-    backgroundColor: "#f9f9f9",
+    color: "#fff",
   },
-  title: { textAlign: "center", marginBottom: "20px" },
-  form: { display: "flex", flexDirection: "column", gap: "10px" },
-  label: { fontWeight: "bold" },
-  input: {
-    padding: "8px",
-    border: "1px solid #ccc",
-    borderRadius: "5px",
+  title: {
+    fontSize: "2rem",
+    textAlign: "center",
+    marginBottom: "10px",
   },
-  button: {
+  subtitle: {
+    fontSize: "1.2rem",
+    textAlign: "center",
+    marginBottom: "20px",
+  },
+  sectionTitle: {
+    fontSize: "1.5rem",
+    marginBottom: "10px",
+    textAlign: "left",
+  },
+  table: {
+    width: "100%",
+    borderCollapse: "collapse",
+    backgroundColor: "#fff",
+    color: "#000",
+  },
+  th: {
     backgroundColor: "#28a745",
     color: "#fff",
     padding: "10px",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-    fontSize: "16px",
+    textAlign: "left",
   },
-  error: { color: "red", marginTop: "10px" },
-  resultados: {
-    marginTop: "20px",
+  td: {
     padding: "10px",
-    border: "1px solid #28a745",
-    borderRadius: "5px",
-    backgroundColor: "#e9ffe9",
+    border: "1px solid #ccc",
+    textAlign: "left",
+  },
+  error: {
+    color: "red",
+    marginTop: "10px",
+    textAlign: "center",
   },
 };
 

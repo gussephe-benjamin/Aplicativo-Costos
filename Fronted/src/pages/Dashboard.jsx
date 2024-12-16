@@ -86,7 +86,7 @@ const styles = {
     padding: "20px",
     border: "1px solid #ddd",
     borderRadius: "8px",
-    backgroundColor: "#fff",
+    backgroundColor: "#000000",
     boxShadow: "0px 2px 4px rgba(0,0,0,0.1)",
     cursor: "pointer",
     transition: "transform 0.2s",
@@ -97,7 +97,7 @@ const styles = {
   logoutButton: {
     padding: "10px 20px",
     backgroundColor: "#dc3545",
-    color: "#fff",
+    color: "#000000",
     border: "none",
     borderRadius: "5px",
     cursor: "pointer",

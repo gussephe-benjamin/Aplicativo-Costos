@@ -22,13 +22,13 @@ const Reportes = () => {
     cargarOrdenes();
   }, []);
 
-  // Descargar el PDF
-  const handleDescargarPDF = async () => {
+  // Descargar el PDF para una orden específica
+  const handleDescargarPDF = async (orden_id) => {
     setError(null);
     setMensaje(null);
 
     try {
-      const response = await descargarReportePDF();
+      const response = await descargarReportePDF(orden_id);
 
       // Crear un objeto URL para el archivo PDF recibido
       const blob = new Blob([response.data], { type: "application/pdf" });
@@ -37,7 +37,7 @@ const Reportes = () => {
       // Crear un enlace temporal para descargar el archivo
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "reporte_ordenes.pdf"); // Nombre del archivo
+      link.setAttribute("download", `reporte_orden_${orden_id}.pdf`); // Nombre del archivo
       document.body.appendChild(link);
       link.click();
 
@@ -45,21 +45,16 @@ const Reportes = () => {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
 
-      setMensaje("Reporte descargado exitosamente.");
+      setMensaje(`Reporte de la orden ${orden_id} descargado exitosamente.`);
     } catch (err) {
       console.error("Error al descargar el reporte:", err.message);
-      setError("Error al descargar el reporte.");
+      setError(`Error al descargar el reporte de la orden ${orden_id}.`);
     }
   };
 
   return (
     <div style={styles.container}>
       <h2>Reportes de Órdenes</h2>
-
-      {/* Botón para descargar el reporte */}
-      <button onClick={handleDescargarPDF} style={styles.button}>
-        Descargar Reporte en PDF
-      </button>
 
       {mensaje && <p style={styles.success}>{mensaje}</p>}
       {error && <p style={styles.error}>{error}</p>}
@@ -70,10 +65,18 @@ const Reportes = () => {
         <ul style={styles.list}>
           {ordenes.map((orden) => (
             <li key={orden.id} style={styles.listItem}>
-              <strong>ID:</strong> {orden.id} | <strong>Usuario ID:</strong>{" "}
-              {orden.usuario_id} | <strong>Producto ID:</strong>{" "}
-              {orden.producto_id} | <strong>Cantidad:</strong> {orden.cantidad} |{" "}
-              <strong>Fecha de Entrega:</strong> {orden.fecha_entrega}
+              <div>
+                <strong>ID:</strong> {orden.id} | <strong>Usuario ID:</strong>{" "}
+                {orden.usuario_id} | <strong>Producto ID:</strong>{" "}
+                {orden.producto_id} | <strong>Cantidad:</strong> {orden.cantidad} |{" "}
+                <strong>Fecha de Entrega:</strong> {orden.fecha_entrega}
+              </div>
+              <button
+                onClick={() => handleDescargarPDF(orden.id)}
+                style={styles.button}
+              >
+                Descargar Reporte PDF
+              </button>
             </li>
           ))}
         </ul>
@@ -92,26 +95,29 @@ const styles = {
     border: "1px solid #ddd",
     borderRadius: "8px",
     boxShadow: "0px 4px 6px rgba(0,0,0,0.1)",
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#664242",
   },
   button: {
     backgroundColor: "#28a745",
     color: "#fff",
-    padding: "10px 20px",
+    padding: "8px 12px",
     border: "none",
     borderRadius: "5px",
     cursor: "pointer",
-    fontSize: "16px",
-    marginBottom: "20px",
+    fontSize: "14px",
+    marginTop: "10px",
   },
   success: { color: "green", marginTop: "10px" },
   error: { color: "red", marginTop: "10px" },
   list: { listStyleType: "none", padding: 0 },
   listItem: {
     padding: "10px",
-    backgroundColor: "#f1f1f1",
+    backgroundColor: "#23ff00",
     borderRadius: "5px",
     marginBottom: "10px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 };
 

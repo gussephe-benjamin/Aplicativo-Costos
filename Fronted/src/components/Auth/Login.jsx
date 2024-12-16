@@ -75,7 +75,7 @@ const styles = {
     border: "1px solid #ddd",
     borderRadius: "5px",
     boxShadow: "0px 4px 6px rgba(0,0,0,0.1)",
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#ff0000",
   },
   form: {
     display: "flex",

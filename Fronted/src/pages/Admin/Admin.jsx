@@ -68,7 +68,7 @@ const styles = {
     padding: "20px",
     border: "1px solid #ddd",
     borderRadius: "8px",
-    backgroundColor: "#fff",
+    backgroundColor: "#664242",
     boxShadow: "0px 2px 4px rgba(0,0,0,0.1)",
     textAlign: "left",
   },
