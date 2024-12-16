@@ -170,6 +170,7 @@ def obtener_orden_por_id(id):
         return record.iloc[0].to_dict()
     return None
 
+
 OUTPUT_DIR = "generated_pdfs"
 
 if not os.path.exists(OUTPUT_DIR):
@@ -177,13 +178,19 @@ if not os.path.exists(OUTPUT_DIR):
 
 def generar_pdf_orden(orden_id):
     # Obtener datos de la orden
-    
     orden = obtener_orden_por_id(orden_id)
     if not orden:
         return {"error": "Orden no encontrada"}
 
     producto = obtener_producto_por_id(orden["producto_id"])
     usuario = obtener_usuario_por_id(orden["usuario_id"])
+
+    if not producto or not usuario:
+        return {"error": "No se pudo obtener datos adicionales"}
+
+    # Validar claves existentes en producto y usuario
+    nombre_producto = producto.get("nombre_producto", "Producto sin nombre")
+    email_usuario = usuario.get("email", "Email no disponible")
 
     # Crear un nuevo PDF
     pdf = FPDF()
@@ -198,8 +205,8 @@ def generar_pdf_orden(orden_id):
     # Datos de la orden
     pdf.set_font("Arial", size=12)
     pdf.cell(0, 10, txt=f"ID de la Orden: {orden['id']}", ln=True)
-    pdf.cell(0, 10, txt=f"Cliente: {usuario['email']}", ln=True)
-    pdf.cell(0, 10, txt=f"Producto: {producto['nombre']}", ln=True)
+    pdf.cell(0, 10, txt=f"Cliente: {email_usuario}", ln=True)
+    pdf.cell(0, 10, txt=f"Producto: {nombre_producto}", ln=True)
     pdf.cell(0, 10, txt=f"Cantidad: {orden['cantidad']}", ln=True)
     pdf.cell(0, 10, txt=f"Fecha de Creación: {orden['fecha_creacion']}", ln=True)
     pdf.cell(0, 10, txt=f"Fecha de Entrega: {orden['fecha_entrega']}", ln=True)

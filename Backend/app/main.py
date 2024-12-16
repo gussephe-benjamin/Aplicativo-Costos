@@ -1,12 +1,19 @@
 from flask import Flask
-from routes import usuarios_routes, productos_routes, materia_prima_routes, mano_obra_routes, costos_indirectos_routes, ordenes_pedido_routes
+from routes import costos_routes
+from routes import usuarios_routes, productos_routes, materia_prima_routes, mano_obra_routes, costos_indirectos_routes, ordenes_pedido_routes, costos_routes
 from config import Config
 from init_db import inicializar_datos
+from flask_cors import CORS
 import os
 
 # Inicializamos los datos si no existe el archivo
 
 app = Flask(__name__)
+
+CORS(app)  # Permite solicitudes desde cualquier origen
+
+# Si deseas restringir los orígenes, usa:
+# CORS(app, origins=["http://localhost:5173"])
 
 # Configuración de la aplicación
 app.config['EXCEL_FILE'] = Config.EXCEL_FILE
@@ -20,6 +27,7 @@ app.register_blueprint(materia_prima_routes.materia_prima_bp, url_prefix='/mater
 app.register_blueprint(mano_obra_routes.mano_obra_bp, url_prefix='/mano-obra')
 app.register_blueprint(costos_indirectos_routes.costos_indirectos_bp, url_prefix='/costos-indirectos')
 app.register_blueprint(ordenes_pedido_routes.ordenes_pedido_bp, url_prefix='/ordenes-pedido')
+app.register_blueprint(costos_routes.costos_bp, url_prefix='/costos')
 
 if __name__ == '__main__':
     

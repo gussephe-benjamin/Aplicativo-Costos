@@ -114,15 +114,31 @@ def obtener_usuario_por_id(usuario_id):
     try:
         # Leer los usuarios desde el archivo Excel
         df = pd.read_excel(EXCEL_FILE, sheet_name=SHEET_NAME)
-        
+
+        # Imprimir columnas para verificar los nombres exactos
+        print("Columnas disponibles:", df.columns)
+
+        # Asegurarse de que 'id' sea tipo entero
+        if 'id' in df.columns:
+            df['id'] = df['id'].astype(int)  # Convertir a entero
+        else:
+            raise KeyError("La columna 'id' no existe en la hoja de Excel.")
+
         # Filtrar el usuario por ID
-        usuario = df[df['id'] == usuario_id]
-        
+        usuario = df[df['id'] == int(usuario_id)]
+
         # Verificar si se encontró el usuario
         if not usuario.empty:
             return usuario.iloc[0].to_dict()  # Convertir el registro a diccionario y retornarlo
         else:
             return None
+    except KeyError as e:
+        print(f"Error: {e}")
+        return None
     except Exception as e:
         print(f"Error al obtener usuario por ID: {e}")
         return None
+
+# Ejemplo de uso
+resultado = obtener_usuario_por_id(1)
+print("Usuario encontrado:", resultado)

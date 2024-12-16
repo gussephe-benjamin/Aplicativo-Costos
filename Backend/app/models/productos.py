@@ -7,15 +7,21 @@ EXCEL_FILE = Config.EXCEL_FILE  # Usamos la ruta del archivo desde la configurac
 SHEET_NAME = "productos"  # Nombre de la hoja donde están los productos
 
 def leer_productos():
-    """Leer todos los productos desde el archivo Excel y devolverlos como una lista de diccionarios"""
+    """Leer todos los productos desde el archivo Excel y devolver un array de diccionarios"""
     try:
-        # Leemos la hoja 'productos' del archivo Excel
+        # Leer la hoja de Excel
         df = pd.read_excel(EXCEL_FILE, sheet_name=SHEET_NAME)
-        return df.to_dict(orient='records')  # Convertimos el DataFrame a lista de diccionarios
+
+        # Reemplazar NaN con None para evitar errores en la serialización JSON
+        df = df.where(pd.notnull(df), None)
+
+        # Convertir a lista de diccionarios
+        return df.to_dict(orient='records')
+
     except Exception as e:
         print(f"Error al leer productos: {e}")
-        return []
-
+        return []  # Devuelve una lista vacía en caso de error
+    
 def guardar_productos(df):
     """Guardar los productos actualizados en la hoja correspondiente del archivo Excel"""
     try:

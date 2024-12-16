@@ -1,6 +1,9 @@
 from flask import Blueprint, request, jsonify
 from models.productos import leer_productos, agregar_producto, actualizar_producto, eliminar_producto
 from datetime import datetime
+from flask import request, jsonify
+from datetime import datetime
+from models.productos import actualizar_producto
 
 productos_bp = Blueprint('productos', __name__)
 
@@ -20,13 +23,19 @@ def crear_producto():
 # Obtener todos los productos
 @productos_bp.route('/getAll', methods=['GET'])
 def obtener_productos():
-    productos = leer_productos()
-    return jsonify(productos), 200
+    try:
+        productos = leer_productos()
+        
+        # Asegurarse de que siempre devolvemos una lista válida
+        if not isinstance(productos, list):
+            productos = []
+
+        return jsonify(productos), 200  # Devuelve un JSON válido
+    except Exception as e:
+        print(f"Error al obtener productos: {e}")
+        return jsonify({"error": "Error interno del servidor"}), 500
 
 # Actualizar producto
-from flask import request, jsonify
-from datetime import datetime
-from models.productos import actualizar_producto
 
 @productos_bp.route('/actualizar', methods=['PUT'])
 def actualizar_producto_route():

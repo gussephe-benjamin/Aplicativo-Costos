@@ -50,28 +50,9 @@ def crear_orden_pedido_route():
 
         if not nueva_orden:
             return jsonify({"error": "No se pudo crear la orden de pedido"}), 400
+        
 
-        # Obtener datos adicionales
-        producto = obtener_producto_por_id(producto_id)
-        usuario = obtener_usuario_por_id(usuario_id)
-
-        if not producto or not usuario:
-            return jsonify({"error": "No se pudo obtener datos adicionales"}), 400
-
-        # Crear un OrderedDict para asegurar el orden de las claves en la respuesta
-        respuesta = OrderedDict([
-            ('producto', producto['nombre']),
-            ('usuario', usuario['email']),
-            ('cantidad', nueva_orden['cantidad']),
-            ('fecha_creacion', nueva_orden['fecha_creacion']),
-            ('fecha_entrega', nueva_orden['fecha_entrega']),
-            ('total_costos_directos', nueva_orden['total_costos_directos']),
-            ('total_costos_indirectos', nueva_orden['total_costos_indirectos']),
-            ('total_costos', nueva_orden['total_costos']),
-            ('precio_unitario', nueva_orden['precio_unitario'])
-        ])
-
-        return jsonify(respuesta), 201
+        return jsonify(nueva_orden), 201
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500

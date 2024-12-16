@@ -8,11 +8,11 @@ EXCEL_FILE = Config.EXCEL_FILE
 
 # Crear DataFrame de prueba para cada tabla
 productos_data = [
-    {"id": 1, "nombre": "Leche", "descripcion": "Leche entera 1L", "precio_unitario": 2.50, "stock": 100, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
-    {"id": 2, "nombre": "Pan", "descripcion": "Pan integral", "precio_unitario": 1.00, "stock": 50, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
-    {"id": 3, "nombre": "Huevos", "descripcion": "Docena de huevos", "precio_unitario": 3.00, "stock": 30, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
-    {"id": 4, "nombre": "Queso", "descripcion": "Queso fresco 500g", "precio_unitario": 4.00, "stock": 20, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
-    {"id": 5, "nombre": "Mantequilla", "descripcion": "Mantequilla sin sal 200g", "precio_unitario": 2.80, "stock": 40, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+    {"id": 1, "nombre_producto": "Leche", "descripcion": "Leche entera 1L", "precio_unitario": 2.50, "stock": 100, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
+    {"id": 2, "nombre_producto": "Pan", "descripcion": "Pan integral", "precio_unitario": 1.00, "stock": 50, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
+    {"id": 3, "nombre_producto": "Huevos", "descripcion": "Docena de huevos", "precio_unitario": 3.00, "stock": 30, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
+    {"id": 4, "nombre_producto": "Queso", "descripcion": "Queso fresco 500g", "precio_unitario": 4.00, "stock": 20, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
+    {"id": 5, "nombre_producto": "Mantequilla", "descripcion": "Mantequilla sin sal 200g", "precio_unitario": 2.80, "stock": 40, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 ]
 productos_df = pd.DataFrame(productos_data)
 
@@ -27,16 +27,16 @@ mano_obra_data = [
 mano_obra_df = pd.DataFrame(mano_obra_data)
 
 materia_prima_data = [
-    {"id": 1, "nombre": "Leche cruda", "cantidad_disponible": 100, "precio_por_unidad": 1.20, "producto_id": 1, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},	
-    {"id": 2, "nombre": "Envase de cartón", "cantidad_disponible": 50, "precio_por_unidad": 0.30, "producto_id": 1, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
-    {"id": 3, "nombre": "Harina integral", "cantidad_disponible": 50, "precio_por_unidad": 0.50, "producto_id": 2, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
-    {"id": 4, "nombre": "Levadura", "cantidad_disponible": 20, "precio_por_unidad": 0.20, "producto_id": 2, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
-    {"id": 5, "nombre": "Huevos frescos", "cantidad_disponible": 60, "precio_por_unidad": 2.00, "producto_id": 3, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
-    {"id": 6, "nombre": "Sal", "cantidad_disponible": 30, "precio_por_unidad": 0.05, "producto_id": 3, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
-    {"id": 7, "nombre": "Leche fresca", "cantidad_disponible": 20, "precio_por_unidad": 1.50, "producto_id": 4, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
-    {"id": 8, "nombre": "Cultura bacteriana", "cantidad_disponible": 10, "precio_por_unidad": 2.00, "producto_id": 4, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
-    {"id": 9, "nombre": "Crema de leche", "cantidad_disponible": 40, "precio_por_unidad": 1.80, "producto_id": 5, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
-    {"id": 10, "nombre": "Sal refinada", "cantidad_disponible": 15, "precio_por_unidad": 0.10, "producto_id": 5, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+    {"id": 1, "nombre_materia_prima": "Leche cruda", "cantidad_disponible": 100, "precio_por_unidad": 1.20, "producto_id": 1, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},	
+    {"id": 2, "nombre_materia_prima": "Envase de cartón", "cantidad_disponible": 50, "precio_por_unidad": 0.30, "producto_id": 1, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
+    {"id": 3, "nombre_materia_prima": "Harina integral", "cantidad_disponible": 50, "precio_por_unidad": 0.50, "producto_id": 2, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
+    {"id": 4, "nombre_materia_prima": "Levadura", "cantidad_disponible": 20, "precio_por_unidad": 0.20, "producto_id": 2, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
+    {"id": 5, "nombre_materia_prima": "Huevos frescos", "cantidad_disponible": 60, "precio_por_unidad": 2.00, "producto_id": 3, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
+    {"id": 6, "nombre_materia_prima": "Sal", "cantidad_disponible": 30, "precio_por_unidad": 0.05, "producto_id": 3, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
+    {"id": 7, "nombre_materia_prima": "Leche fresca", "cantidad_disponible": 20, "precio_por_unidad": 1.50, "producto_id": 4, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
+    {"id": 8, "nombre_materia_prima": "Cultura bacteriana", "cantidad_disponible": 10, "precio_por_unidad": 2.00, "producto_id": 4, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
+    {"id": 9, "nombre_materia_prima": "Crema de leche", "cantidad_disponible": 40, "precio_por_unidad": 1.80, "producto_id": 5, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
+    {"id": 10, "nombre_materia_prima": "Sal refinada", "cantidad_disponible": 15, "precio_por_unidad": 0.10, "producto_id": 5, "fecha_agregado": datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 ]
 materia_prima_df = pd.DataFrame(materia_prima_data)
 

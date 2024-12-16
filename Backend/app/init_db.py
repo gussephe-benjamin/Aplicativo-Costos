@@ -11,7 +11,7 @@ def inicializar_datos():
         # Crear un DataFrame vacío para cada hoja necesaria
         hojas = {
             'usuarios': pd.DataFrame(columns=['id', 'nombre', 'email', 'contraseña', 'rol', 'fecha_registro']),
-            'productos': pd.DataFrame(columns=['id', 'nombre_producto', 'descripcion', 'precio_unitario', 'stock', 'fecha_agregado', 'fecha_actualizado']),
+            'productos': pd.DataFrame(columns=['id', 'nombre_producto', 'descripcion', 'precio_unitario', 'stock', 'fecha_agregado']),
             'materia_prima': pd.DataFrame(columns=['id', 'nombre_materia_prima', 'cantidad_disponible', 'precio_por_unidad', 'producto_id', 'fecha_agregado']),
             'mano_obra': pd.DataFrame(columns=['id', 'nombre_empleado', 'costo_por_hora', 'horas_requeridas', 'producto_id', 'fecha_agregado']),
             'costos_indirectos': pd.DataFrame(columns=['id', 'tipo', 'monto', 'descripcion']),
