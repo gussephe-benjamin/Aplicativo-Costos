@@ -1,0 +1,755 @@
+{
+	"info": {
+		"_postman_id": "cc5b86f8-3302-4090-aeb2-7e63c53bd6c0",
+		"name": "Aplicacion-Costos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33993284"
+	},
+	"item": [
+		{
+			"name": "USERS",
+			"item": [
+				{
+					"name": "/usuarios/registro",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Juan Perez\",\r\n    \"email\": \"benjamin@example.com\",\r\n    \"contraseña\": \"123456\",\r\n    \"rol\": \"usuario\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/usuarios/registro",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"usuarios",
+								"registro"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/usuarios/login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"benjamin@example.com\",\r\n    \"contraseña\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/usuarios/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"usuarios",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/usuarios/rol",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibm9tYnJlIjoiSnVhbiBQZXJleiIsImVtYWlsIjoiYmVuamFtaW5AZXhhbXBsZS5jb20iLCJyb2wiOiJ1c3VhcmlvIiwiZXhwIjoxNzM0Mzc3OTgwfQ.noiilB_5C_Xxeoe5LRLcWrkIhwe8BbQYNDcDsyXiqgA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/usuarios/rol",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"usuarios",
+								"rol"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PRODUCTOS",
+			"item": [
+				{
+					"name": "/productos/crear",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Pan Integral\",\r\n  \"descripcion\": \"Pan integral de 500g\",\r\n  \"precio_unitario\": 5.0,\r\n  \"stock\": 150\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/productos/crear",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"productos",
+								"crear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/productos/getAll",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/productos/getAll",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"productos",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/productos/actualizar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\" : 1,\r\n    \"nombre\": \"Cereal de MAIZ\",\r\n    \"descripcion\": \"Cereal con sabor a chocolate, paquete de 500g.\",\r\n    \"precio_unitario\": 3.50,\r\n    \"stock\": 200\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/productos/actualizar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"productos",
+								"actualizar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/productos/eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\" : 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/productos/eliminar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"productos",
+								"eliminar"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MANO DE OBRA",
+			"item": [
+				{
+					"name": "/mano-obra/post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre_empleado\": \"Carlos González Fernado\",\r\n    \"costo_por_hora\": 15.5,\r\n    \"producto_id\": 2,\r\n    \"horas_requeridas\": 8\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/mano-obra/post",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"mano-obra",
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/mano-obra/get/1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/mano-obra/get/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"mano-obra",
+								"get",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/mano-obra/getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/mano-obra/getAll",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"mano-obra",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/mano-obra/put/1",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre_empleado\": \"Carlos González alvarado\",\r\n    \"costo_por_hora\": 15.5,\r\n    \"producto_id\": 2,\r\n    \"horas_requeridas\": 8\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/mano-obra/put/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"mano-obra",
+								"put",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/mano-obra/delete/1",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/mano-obra/delete/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"mano-obra",
+								"delete",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MATERIA PRIMA",
+			"item": [
+				{
+					"name": "/materia-prima/get/4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/materia-prima/get/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"materia-prima",
+								"get",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/materia-prima/post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"pasas\",\r\n  \"cantidad_disponible\": 5,\r\n  \"precio_por_unidad\": 0.01,\r\n  \"producto_id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/materia-prima/post",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"materia-prima",
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/materia-prima/getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/materia-prima/getAll",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"materia-prima",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/materia-prima/put/4",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"cantidad_disponible\": 100,\r\n        \"descripcion\": \"Buen Producto\",\r\n        \"id\": 1,\r\n        \"nombre\": \"Harina de Trigo\",\r\n        \"precio_por_unidad\": 2.5\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/materia-prima/put/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"materia-prima",
+								"put",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/materia-prima/delete/4",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/materia-prima/delete/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"materia-prima",
+								"delete",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ORDENES PEDIDO",
+			"item": [
+				{
+					"name": "/ordenes-pedido/post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"usuario_id\": 1,\r\n    \"producto_id\": 3,\r\n    \"cantidad\": 1,\r\n    \"fecha_entrega\": \"2024-12-20\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/ordenes-pedido/post",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"ordenes-pedido",
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/ordenes-pedido/getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/ordenes-pedido/getAll",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"ordenes-pedido",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/ordenes-pedido/get/3",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/ordenes-pedido/get/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"ordenes-pedido",
+								"get",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/ordenes-pedido/put/3",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cantidad\": 15,\r\n    \"fecha_entrega\": \"2024-12-25\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/ordenes-pedido/put/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"ordenes-pedido",
+								"put",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/ordenes-pedido/delete/3",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/ordenes-pedido/delete/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"ordenes-pedido",
+								"delete",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "COSTOS INDIRECTOS",
+			"item": [
+				{
+					"name": "/costos-indirectos/post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tipo\": \"Electricidad\",\r\n    \"monto\": 150.75,\r\n    \"descripcion\": \"Costo mensual del servicio eléctrico\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/costos-indirectos/post",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"costos-indirectos",
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/costos-indirectos/get/1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/costos-indirectos/get/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"costos-indirectos",
+								"get",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/costos-indirectos/getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/costos-indirectos/getAll",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"costos-indirectos",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/costos-indirectos/put/1",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tipo\": \"Electricidad inmobiliaria xd\",\r\n    \"monto\": 150.75,\r\n    \"descripcion\": \"Costo mensual del servicio eléctrico\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/costos-indirectos/put/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"costos-indirectos",
+								"put",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/costos-indirectos/delete/1",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/costos-indirectos/delete/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"costos-indirectos",
+								"delete",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PDF",
+			"item": []
+		}
+	]
+}
