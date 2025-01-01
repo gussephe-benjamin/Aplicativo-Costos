@@ -2,7 +2,7 @@
 FROM node:20
 
 # 2. Establecer el directorio de trabajo dentro del contenedor
-WORKDIR /app
+WORKDIR /apli
 
 # 3. Crear un package.json con las dependencias esenciales
 RUN npm init -y \
